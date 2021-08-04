@@ -1,0 +1,8 @@
+[workspace]
+
+members = [
+    "tundevice",
+    "mizaru",
+    "binder_transport",
+    "geph4-aioutils",
+] 
