@@ -3,6 +3,6 @@
 members = [
     "tundevice",
     "mizaru",
-    "binder_transport",
+    "geph4-binder-transport",
     "geph4-aioutils",
 ] 
