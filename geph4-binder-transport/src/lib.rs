@@ -1,6 +1,7 @@
 mod wiretypes;
 
 use std::{
+    net::IpAddr,
     sync::{atomic::AtomicUsize, atomic::Ordering, Arc},
     time::Duration,
 };
@@ -29,6 +30,7 @@ pub trait BinderServer: Send + Sync {
 #[derivative(Debug)]
 pub struct BinderRequest {
     pub request_data: BinderRequestData,
+    probable_ip: Option<IpAddr>,
     #[derivative(Debug = "ignore")]
     response_send: Box<dyn FnOnce(BinderResult<BinderResponse>) + Send + Sync>,
 }
@@ -37,6 +39,11 @@ impl BinderRequest {
     /// Respond to the request.
     pub fn respond(self, response: BinderResult<BinderResponse>) {
         (self.response_send)(response)
+    }
+
+    /// The probable IP address of the request.
+    pub fn probable_ip(&self) -> Option<IpAddr> {
+        self.probable_ip
     }
 }
 

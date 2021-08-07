@@ -8,7 +8,7 @@ use http_types::{Method, Request, StatusCode, Url};
 use smol::channel::{Receiver, Sender};
 use smol_timeout::TimeoutExt;
 use std::{
-    net::SocketAddr,
+    net::{IpAddr, SocketAddr},
     sync::Arc,
     time::{Duration, Instant},
 };
@@ -203,6 +203,10 @@ async fn httpserver_main_loop(
                     let my_lsk = my_lsk.clone();
                     drop(
                         async_h1::accept(client, |mut req| {
+                            let probable_ip = req
+                                .header("x-forwarded-for")
+                                .and_then(|hv| hv.get(0))
+                                .and_then(|f| f.as_str().parse::<IpAddr>().ok());
                             let start = Instant::now();
                             let my_lsk = my_lsk.clone();
                             let breq_send = breq_send.clone();
@@ -226,6 +230,7 @@ async fn httpserver_main_loop(
                                     response_send: Box::new(move |val| {
                                         drop(oneshot_send.try_send(val))
                                     }),
+                                    probable_ip,
                                 };
                                 breq_send.send(breq).await?;
                                 // wait for response
