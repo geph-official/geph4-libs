@@ -83,7 +83,7 @@ impl MultiBinderClient {
                 log::trace!("request_one succeeded");
                 self.index.fetch_sub(1, Ordering::Relaxed);
                 return Ok(res);
-            } else if let Some(Err(BinderError::Other(other))) = res {
+            } else if let Some(Err(BinderError::Network(other))) = res {
                 log::warn!("MultiBinderClient switching backend due to error {}", other);
             } else if let Some(e) = res {
                 return e;
