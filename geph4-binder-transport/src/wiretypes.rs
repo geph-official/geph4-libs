@@ -252,10 +252,13 @@ pub enum BinderError {
     // other failure
     #[error("other failure `{0}`")]
     Other(String),
+    // I/O failure
+    #[error("network failure `{0}`")]
+    Network(String),
 }
 
 impl From<std::io::Error> for BinderError {
     fn from(value: std::io::Error) -> Self {
-        BinderError::Other(value.to_string())
+        BinderError::Network(value.to_string())
     }
 }
