@@ -1,7 +1,7 @@
 use fs::OpenOptions;
 use smol::prelude::*;
-use std::os::raw::c_char;
 use std::os::unix::io::AsRawFd;
+use std::os::{raw::c_char, unix::prelude::RawFd};
 use std::{ffi::CStr, process::Command};
 use std::{fs, io, os::raw::c_int};
 extern "C" {
@@ -79,6 +79,12 @@ impl TunDevice {
     pub async fn write_raw(&self, to_write: &[u8]) -> Option<()> {
         (&self.fd).write(to_write).await.ok();
         Some(())
+    }
+
+    /// Extracts a **duplicate** of the inner file-descriptor.
+    pub fn dup_rawfd(&self) -> RawFd {
+        let inner = self.fd.lock();
+        unsafe { libc::dup(inner.as_raw_fd()) }
     }
 }
 
