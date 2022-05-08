@@ -206,7 +206,7 @@ async fn httpserver_main_loop(
                             let probable_ip = req
                                 .header("x-forwarded-for")
                                 .and_then(|hv| hv.get(0))
-                                .and_then(|f| f.as_str().parse::<IpAddr>().ok());
+                                .and_then(|f| f.as_str().split(',').next()?.parse::<IpAddr>().ok());
                             let start = Instant::now();
                             let my_lsk = my_lsk.clone();
                             let breq_send = breq_send.clone();

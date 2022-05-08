@@ -31,7 +31,7 @@ smolscale= "0.3.7"
 thiserror= "1.0.23"
 rsa-fdh = "0.5.0"
 async-trait= "0.1.42"
-smol-timeout="0.6"
+smol-timeout= "0.6.0"
 rustls="0.19"
 webpki-roots="0.21"
 
