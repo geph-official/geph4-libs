@@ -194,7 +194,9 @@ async fn httpserver_main_loop(
         if let Ok((client, _)) = listener.accept().await {
             let my_lsk = my_lsk.clone();
             let breq_send = breq_send.clone();
-            let peer_addr = client.peer_addr().unwrap();
+            let peer_addr = client
+                .peer_addr()
+                .unwrap_or_else(|_| "0.0.0.0:0".parse().unwrap());
             log::trace!("new connection from {}", peer_addr);
             let on_time = on_time.clone();
             // start a new task
