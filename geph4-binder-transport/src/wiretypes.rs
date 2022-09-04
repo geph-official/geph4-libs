@@ -181,7 +181,7 @@ pub struct ExitDescriptor {
 }
 
 /// Bridge descriptor
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Hash)]
 pub struct BridgeDescriptor {
     pub endpoint: SocketAddr,
     pub sosistab_key: x25519_dalek::PublicKey,
