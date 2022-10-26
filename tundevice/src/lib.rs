@@ -4,8 +4,12 @@ use std::os::unix::io::AsRawFd;
 use std::os::{raw::c_char, unix::prelude::RawFd};
 use std::{ffi::CStr, process::Command};
 use std::{fs, io, os::raw::c_int};
-extern "C" {
-    fn tun_setup(fd: c_int, name: *mut u8) -> c_int;
+// extern "C" {
+//     fn tun_setup(fd: c_int, name: *mut u8) -> c_int;
+// }
+
+unsafe fn tun_setup(fd: c_int, name: *mut u8) -> c_int {
+    let ifr = libc::ifreq::default();
 }
 
 /// A virtual TUN interface.
@@ -40,7 +44,7 @@ impl TunDevice {
                 .to_string_lossy()
                 .into_owned()
         };
-        log::warn!("TUN DEVICE INITIALIZED {:#?}", fd);
+        log::info!("TUN DEVICE INITIALIZED {:#?}", fd);
         // return the device
         Ok(TunDevice {
             fd: async_dup::Mutex::new(smol::Async::new(fd)?),

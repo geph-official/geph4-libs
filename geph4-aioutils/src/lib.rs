@@ -105,7 +105,7 @@ pub async fn copy_with_stats_async<F: Future<Output = ()>>(
     mut writer: impl AsyncWrite + Unpin,
     mut on_write: impl FnMut(usize) -> F,
 ) -> std::io::Result<()> {
-    let mut buffer = [0u8; 32768];
+    let mut buffer = [0u8; 4096];
     let mut timeout = smol::Timer::after(IDLE_TIMEOUT);
     loop {
         // first read into the small buffer
