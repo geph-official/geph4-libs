@@ -1,6 +1,6 @@
 [package]
 name = "geph4-aioutils"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["miyuruasuka"]
 edition = "2018"
 description="utility crate for geph4"
